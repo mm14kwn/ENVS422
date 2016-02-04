@@ -1,0 +1,67 @@
+stackmonth.dat contains 1065830404 bytes = 4*(1+257*1440*720)
+The first 4 bytes contain an integer (257) describing the number of months of data
+The next 257*4=1028 bytes contain an altimetry time series (real*4 numbers):
+SSH in metres + 3 + 5*i
+
+ where i = 0 means month is complete
+       i = 1 means month is missing 1 or 2 days
+       i = 2 means month is missing 3 to 5 days
+       i = 3 means month is missing 6 to 15 days
+       i = 4 means there is at least one day of data in the month
+       i = 5 means there is no data in this month
+
+when reading, can convert back to SSH in m, and i,  with
+i=floor((ssh)/5);
+ssh=mod(ssh,5)-3;
+
+The next 257*4=1028 bytes is another time series, and so on.
+
+The first time series is at latitude -89.875, longitude 0.125
+The 2nd   time series is at latitude -89.875, longitude 0.125+0.25
+...
+The 1440th time series is at latitude -89.875, longitude 359.875
+
+The 1441st time series is at latitude -89.875 + 0.25, longitude 0.125
+
+i.e. the data are in slabs containing 1440 time series at the southernmost latitude, then 1440 time series at the next latitude, etc, with grid spacing 1/4 degree in longitude and latitude
+
+Longitudes are 0.125 to 359.875 step 0.25 degrees
+Latitudes are -89.875 to +89.875 step 0.25 degrees
+
+
+The SSH values are averages for calendar months. The first month is Jan 1993, the last is May 2014.
+
+_____________________________________________________________________________
+
+
+stack7d_1117_1.dat contains 1544140800 bytes = 4*(1117*1440*240)
+The first 1117*4=4468 bytes makes a time series of weekly SSH (in metres, with missing values set to -99.)
+The 2nd 1117*4-4468 bytes is a second time series, at the next longitude along
+.... 1440 longitudes, and then move up to the next latitude
+...240 latitudes
+Longitudes are 0.125 to 359.875 step 0.25 degrees
+Latitudes are -89.875 to -30.125 step 0.25 degrees
+
+stack7d_1117_2.dat
+is the same as stack7d_1117_1.dat
+but for a different latitude range:
+Latitudes are -29.875 to -29.875 step 0.25 degrees
+
+stack7d_1117_3.dat
+is the same as stack7d_1117_1.dat
+but for a different latitude range:
+Latitudes are 30.125 to 89.875 step 0.25 degrees
+
+The time series are every 7 days from 6 Jan 1993 (Wednesdays).
+The values are 1-day samples from data which have been filtered to contain periods of 20 days and longer only.
+
+_____________________________________________________________________________
+
+dt_global_allsat_madt_h_20140530_20141010.nc
+is a NetCDF file containing a single map of sea level from 30 May 2014 on a global 1/4 degree grid 
+
+Longitudes are 0.125 to 359.875 step 0.25 degrees
+Latitudes are -89.875 to +89.875 step 0.25 degrees
+
+The file also contains details of the grid.
+
